@@ -112,7 +112,7 @@ namespace {
             if (pos >= m_stop_at) {
                 m_stop_at = -1;
                 stop_timer();
-                pc->start(playback_control::track_command_next);
+                pc->start(playback_control::track_command_default);
             }
         }
     };
