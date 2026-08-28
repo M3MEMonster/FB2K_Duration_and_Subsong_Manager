@@ -56,8 +56,9 @@ WTL **MUST** be placed as below:
 
 ### Build steps
 1. Open `Foo_Duration_Subsong_Manager.sln`.
-2. Build **Release | Win32** and **Release | x64** (both are required to package).
-3. The Release|x64 post-build step runs `fb2k_component_pack.ps1`, producing `dist\foo_duration_subsong_manager.fb2k-component`
+2. 2. Add all .vcxproj in foobar2000SDK (except `foo_sample`) to the solution. Then add all these as references to `foo_duration_subsong_manager`.
+3. Build **Release | Win32** and **Release | x64** (both are required to package).
+4. The Release|x64 post-build step runs `fb2k_component_pack.ps1`, producing `dist\foo_duration_subsong_manager.fb2k-component`
 
 ## How it works (overview)
 The custom-duration feature is upheld by three independent mechanisms:
