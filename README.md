@@ -56,7 +56,7 @@ WTL **MUST** be placed as below:
 
 ### Build steps
 1. Open `Foo_Duration_Subsong_Manager.sln`.
-2. 2. Add all .vcxproj in foobar2000SDK (except `foo_sample`) to the solution. Then add all these as references to `foo_duration_subsong_manager`.
+2. Add all .vcxproj in foobar2000SDK (except `foo_sample`) to the solution. Then add all these as references to `foo_duration_subsong_manager`.
 3. Build **Release | Win32** and **Release | x64** (both are required to package).
 4. The Release|x64 post-build step runs `fb2k_component_pack.ps1`, producing `dist\foo_duration_subsong_manager.fb2k-component`
 
@@ -143,8 +143,9 @@ WTL的位置**必须**如下图所示：
 
 #### 构建步骤
 1. 打开 `Foo_Duration_Subsong_Manager.sln`。
-2. 分别构建 **Release | Win32** 和 **Release | x64**（打包需要两者都构建）。
-3. Release|x64 的生成后事件会运行 `fb2k_component_pack.ps1`，输出 `dist\foo_duration_subsong_manager.fb2k-component`。
+2. 将foobarSDK中的所有.vcxproj（foo_sample除外）添加到解决方案中，并将其全部添加为`foo_duration_subsong_manager`的引用
+3. 分别构建 **Release | Win32** 和 **Release | x64**（打包需要两者都构建）。
+4. Release|x64 的生成后事件会运行 `fb2k_component_pack.ps1`，输出 `dist\foo_duration_subsong_manager.fb2k-component`。
 
 ### 原理概览
 自定义时长功能由三条相互独立的机制共同保证：
