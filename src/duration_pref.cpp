@@ -25,7 +25,6 @@ private:
 		explicit song_item_with_key(const duration_db::song_item& base) : duration_db::song_item(base),
 			file_name_sortkey(pfc::makeSortString(base.file_name)),
 			track_title_sortkey(pfc::makeSortString(base.track_title)) {}
-		// 由于pfc::sotString_t为unique_ptr，本结构仅允许移动
 		//Since pfc::sotString_t is unique_ptr, this class can only be MOVED
 		song_item_with_key(const song_item_with_key&) = delete;
 		song_item_with_key& operator=(const song_item_with_key&) = delete;

@@ -4,12 +4,6 @@
 namespace duration_db {
 
 
-	// 为每个音轨生成稳定的唯一标识 key（两段式哈希）。
-	// 第一段：对文件「内容」做 MD5（而非用路径），这样文件被移动/改名后仍能匹配到同一条记录。
-	// 第二段：把（内容哈希 或 路径回退值）+ 分隔符 + subsong 索引 再做一次 MD5，从而区分同一文件内的不同子歌曲。
-	// Generates a stable, unique key for each track (two-stage hashing).
-	// Stage 1: MD5 over the file CONTENT (not the path), so a moved/renamed file still maps to the same record.
-	// Stage 2: MD5 over (content hash OR path fallback) + separator + subsong index, to distinguish subsongs within one file.
 	pfc::string8 content_hasher(const char* path, uint32_t subsong) {
         pfc::string8 contentHash;
         bool contentOk = false;

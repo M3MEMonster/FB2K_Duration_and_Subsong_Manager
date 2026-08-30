@@ -106,23 +106,19 @@ namespace {
 	}
 	CHpTimerWindow::CHpTimerWindow(ui_element_config::ptr config, ui_element_instance_callback_ptr p_callback) : m_callback(p_callback), m_config(config) {
 	}
-	//创建窗口时将定时器同步到正在播放的音轨
 	//Sync timer to the playing track
 	int CHpTimerWindow::OnCreate(LPCREATESTRUCT) {
 		sync_timer_to_playback();
 		return 0;
 	}
-	//销毁窗口时停止计时器
 	//Stop timer when the window is destroyed
 	void CHpTimerWindow::OnDestroy() {
 		stop_timer();
 	}
-	//禁用背景擦除
 	//Disable Background Erase
 	BOOL CHpTimerWindow::OnEraseBkgnd(CDCHandle) {
 		return TRUE;
 	}
-	//绘制函数一并处理背景+内容，并且先在内存中绘制，画好后传给屏幕。双缓冲机制最大程度防止闪烁
 	//Paint background and content together and use memory buffer to avoid blink as much as possible
 	void CHpTimerWindow::OnPaint(CDCHandle) {
 		CPaintDC dc(*this);
@@ -183,7 +179,6 @@ namespace {
 	// ui_element_impl_withpopup autogenerates standalone version of our component and proper menu commands. Use ui_element_impl instead if you don't want that.
 	class ui_element_myimpl : public ui_element_impl_withpopup<CHpTimerWindow> {
 	public:
-		//自定义窗口初始大小
 		//Custom window size as a very small rectangle
 		bool get_popup_specs(ui_size& defSize, pfc::string_base& title) override {
 			defSize = { 220,24 };

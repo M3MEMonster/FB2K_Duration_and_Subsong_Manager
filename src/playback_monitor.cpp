@@ -66,7 +66,6 @@ namespace {
             m_timer_active = false;
         }
         //Create a message-only window (HWND_MESSAGE) to monitor playback by handling WM_TIMER
-        // 用 HWND_MESSAGE 创建「仅消息窗口」，通过WM_TIMER实现时长监视
         bool create_message_window() {
             if (m_hwnd) return true;
 
@@ -101,7 +100,6 @@ namespace {
             return ::DefWindowProcW(hwnd, msg, wp, lp);
         }
 
-        // 一旦到达自定义时长 m_stop_at 就切到下一首（截断）
         // When it reaches the custom length m_stop_at, truncate it.
         void on_timer() {
             if (m_stop_at <= 0) return;

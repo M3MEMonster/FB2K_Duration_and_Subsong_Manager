@@ -7,8 +7,8 @@ if (-not (Test-Path $X86Dll)) { throw "找不到 x86 DLL: $X86Dll`n请先编译 
 $OutDir   = Join-Path $PSScriptRoot "dist"
 $ZipPath  = Join-Path $OutDir "$ComponentName.zip"
 $Fb2kPath = Join-Path $OutDir "$ComponentName.fb2k-component"
-$Stage = Join-Path $OutDir "stage"
 New-Item -ItemType Directory -Path $OutDir -Force | Out-Null
+$Stage = Join-Path $OutDir "stage"
 try {
     New-Item -ItemType Directory -Path (Join-Path $Stage "x64") -Force | Out-Null
     Copy-Item $X86Dll $Stage -Force

@@ -52,8 +52,10 @@ dist/
 lib/
 Release/
 Release FB2K/
+Win32/
 x64/
 *.user
+*.aps
 
 # CMake generated files
 CMakeFiles/

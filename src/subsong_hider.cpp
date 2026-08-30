@@ -5,12 +5,6 @@
 #include <string>
 #include "global_container.h"
 //Hook for sqlite functions during runtime to hide subsong item from database query
-// foobar 的媒体库底层用 sqlite 存储。本文件通过 MinHook 在运行时挂钩 sqlite3 的若干函数，
-// 拦截媒体库查询 "SELECT name FROM media" 的结果，把用户标记为隐藏的子歌曲从结果中「吃掉」，
-// 使它们不出现在自动播放列表等处。
-// foobar's media library is backed by sqlite. This file uses MinHook to hook sqlite3 functions at runtime,
-// intercepting the result rows of the media-library query "SELECT name FROM media" and silently dropping
-// any subsongs the user marked as hidden, so they no longer show up (e.g. in autoplaylists).
 namespace {
 	struct sqlite3;
 	struct sqlite3_stmt;
@@ -18,19 +12,20 @@ namespace {
 	using sqlite3_step_t = int(__cdecl*)(sqlite3_stmt* stmt);
 	using sqlite3_column_text_t = const unsigned char* (__cdecl*)(sqlite3_stmt*, int iCol);
 	using sqlite3_finalize_t = int(__cdecl*)(sqlite3_stmt* pStmt);
+	using openmpt_invalidate_t = const char* (__thiscall*)(void* thisptr, char* EndPtr);
 	static sqlite3_prepare_v2_t original_sqlite3_prepare_v2 = nullptr;
 	static sqlite3_step_t original_sqlite3_step = nullptr;
 	static sqlite3_column_text_t sqlite3_column_text = nullptr;
 	static sqlite3_finalize_t original_sqlite3_finalize = nullptr;
+	static openmpt_invalidate_t original_openmpt_invalidate = nullptr;
 	constexpr int SQLITE_ROW = 100;
 	constexpr int SQLITE_DONE = 101;
 	std::unordered_set<sqlite3_stmt*> media_stmt;
 	std::mutex media_stmt_mutex;
 
 	int __cdecl my_sqlite3_step(sqlite3_stmt* stmt) {
-		// Hide subsong by silently go to next step using goto label
-		// 通过goto label静默继续查询实现稳定隐藏
-	label:
+		// Hide subsong by silently go to next step using goto
+	begin:
 		int ret;
 		ret = original_sqlite3_step(stmt);
 		bool is_media_stmt = false;
@@ -49,14 +44,13 @@ namespace {
 				text++;
 				pfc::string8 file_path(reinterpret_cast<const char*>(text));
 				_temp_container[file_path].insert(subsong_index);
-				// 不同解码器的 subsong 索引有的从 0 开始、有的从 1 开始
 				// Some decoders index subsongs from 0, others from 1.
 				if (mul_subsong_filter.exists(file_path)) {
 					if (mul_subsong_filter[file_path].is0base) {
-						if (!mul_subsong_filter[file_path].subsong_filter[subsong_index]) goto label;
+						if (!mul_subsong_filter[file_path].subsong_filter[subsong_index]) goto begin;
 					}
 					else {
-						if (!mul_subsong_filter[file_path].subsong_filter[subsong_index - 1]) goto label;
+						if (!mul_subsong_filter[file_path].subsong_filter[subsong_index - 1]) goto begin;
 					}
 				}
 			}
@@ -66,7 +60,6 @@ namespace {
 	}
 	int __cdecl my_sqlite3_prepare_v2(sqlite3* db, const char* zSql, int nByte, sqlite3_stmt** ppStmt, const char** pzTail) {
 		int ret = original_sqlite3_prepare_v2(db, zSql, nByte, ppStmt, pzTail);
-		//仅捕捉该类型查询
 		//Only this kind query will be marked
 		if (zSql && strcmp(zSql, "SELECT name FROM media") == 0) {
 			{

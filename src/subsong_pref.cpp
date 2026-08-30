@@ -25,7 +25,6 @@ public:
 
 	t_uint32 get_state() {
 		t_uint32 state = preferences_state::dark_mode_supported;
-		// needs_restart：隐藏过滤是靠 hook 媒体库查询生效的，改动需要重启后才会反映出来。
 		// needs_restart: the hide filter works by hooking media-library queries, so changes only take effect after a restart.
 		if (HasChanged()) state |= preferences_state::changed|preferences_state::needs_restart;
 		return state;
@@ -98,7 +97,7 @@ private:
 					subsong_db::subsong_list su_item{};
 					su_item.file_path = key;
 					su_item.subsong_filter.assign(subsong_count, true);
-					// 推断索引是 0 基还是 1 基. Infer the index is 0-based or 1-based
+					// Infer the index is 0-based or 1-based
 					su_item.is0base = item.size() - *item.rbegin();/*Exmaple: 0-based {0,1,2}: size3 - max2 = 1 -> true; 1-based {1,2,3}: size3 - max3 = 0 -> false.*/
 					if (mul_subsong_filter.exists(key)) {
 						temp_filter.emplace_back(mul_subsong_filter[key]);
@@ -191,7 +190,6 @@ private:
 		range_to_text();
 		OnChanged();
 	}
-	// 把 bool 过滤数组转换成区间文本（如 "1-3,5,7"，无空格）。
 	// Converts the bool filter array into range text (e.g. "1-3,5,7", no space).
 	void range_to_text() {
 		m_internal_update = true;
@@ -256,7 +254,6 @@ private:
 		SetDlgItemText(IDC_RANGE_INPUT, pfc::stringcvt::string_wide_from_utf8(range.c_str()).get_ptr());
 		m_internal_update = false;
 	}
-	// range_to_text 的逆操作
 	// Inverse of range_to_text
 	void text_to_range() {
 		if (m_file_sel == SIZE_MAX || m_file_sel >= temp_filter.size()) return;
@@ -269,7 +266,6 @@ private:
 		std::vector<uint8_t> mask;
 		mask.assign(s.subsong_filter.size(), false);
 		if (text_p8.isEmpty()) goto end;
-		//若包含非法字符则回退
 		//return if contains illegal char
 		{
 			auto isAllowed = [](char c) {
@@ -289,7 +285,6 @@ private:
 				for (auto& num_str : out_2) {
 					se.emplace_back(pfc::atoui_ex(num_str.c_str(), num_str.length()));
 				}
-				//数字异常或格式异常则回退
 				//return if the number or format is abnormal
 				if (se.size() != 2 || se[0] > se[1] || se[0] > mask.size() || se[1] > mask.size()) return;
 				
