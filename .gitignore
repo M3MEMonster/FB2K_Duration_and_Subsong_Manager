@@ -52,6 +52,8 @@ dist/
 lib/
 Release/
 Release FB2K/
+Debug/
+Debug FB2K/
 Win32/
 x64/
 *.user
