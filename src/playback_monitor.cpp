@@ -79,21 +79,18 @@ namespace {
                 ::RegisterClassW(&wc);
                 registered = true;
             }
-            m_hwnd = ::CreateWindowW(CLASS_NAME, L"", 0, 0, 0, 0, 0,
-                HWND_MESSAGE, nullptr, core_api::get_my_instance(), this);
+            m_hwnd = ::CreateWindowW(CLASS_NAME, L"", 0, 0, 0, 0, 0, HWND_MESSAGE, nullptr, core_api::get_my_instance(), this);
             return m_hwnd != nullptr;
         }
         static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             
             if (msg == WM_CREATE) {
                 auto cs = reinterpret_cast<CREATESTRUCT*>(lp);
-                ::SetWindowLongPtrW(hwnd, GWLP_USERDATA,
-                    reinterpret_cast<LONG_PTR>(cs->lpCreateParams));
+                ::SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(cs->lpCreateParams));
                 return 0;
             }
             if (msg == WM_TIMER && wp == TIMER_ID) {
-                auto self = reinterpret_cast<duration_playback_monitor*>(
-                    ::GetWindowLongPtrW(hwnd, GWLP_USERDATA));
+                auto self = reinterpret_cast<duration_playback_monitor*>(::GetWindowLongPtrW(hwnd, GWLP_USERDATA));
                 if (self) self->on_timer();
                 return 0;
             }

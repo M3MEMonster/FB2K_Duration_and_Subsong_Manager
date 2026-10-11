@@ -1,4 +1,5 @@
-﻿$ErrorActionPreference = "Stop"
+﻿#Requires -Version 7.2
+$ErrorActionPreference = "Stop"
 $ComponentName = "foo_duration_subsong_manager"
 $DllName       = "$ComponentName.dll"
 $X86Dll = Join-Path $PSScriptRoot "Release\$DllName"

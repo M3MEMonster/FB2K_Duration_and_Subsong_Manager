@@ -159,7 +159,7 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>powershell -NoProfile -ExecutionPolicy Bypass -File "$(SolutionDir)fb2k_component_pack.ps1"</Command>
+      <Command>pwsh.exe -NoProfile -ExecutionPolicy Bypass -File "$(SolutionDir)fb2k_component_pack.ps1"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

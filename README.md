@@ -36,6 +36,7 @@ A [foobar2000](https://www.foobar2000.org/) component that lets you override the
 - Visual Studio 2022 with the **Desktop development with C++** workload (and a Windows 10/11 SDK).
 - The official **foobar2000 SDK (2025-03-07 or compatible)**.
 - **WTL 10** (Windows Template Library).
+- PowerShell 7.2 or later for packaging
 
 ### Directory layout
 The project files reference the SDK with system environment variable `FB2KSDK`. So, you just need to add the variable with SDK loacation to your system then the project will recognize it. 
@@ -124,6 +125,7 @@ Released under the [MIT License](LICENSE).
 - Visual Studio 2022，安装 **“使用 C++ 的桌面开发”** 工作负载（以及 Windows 10/11 SDK）。
 - 官方 **foobar2000 SDK（2025-03-07 或兼容版本）**。
 - **WTL 10**（Windows Template Library）。
+- 需要PowerShell 7.2 或以上版本用来打包
 
 #### 目录布局
 工程文件通过系统环境变量`FB2KSDK`引用 SDK。配置好环境变量后项目就会自动识别。
